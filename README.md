@@ -8,8 +8,6 @@ This project implements a simulation of a competitive coding rating system for a
 
 - 'Participant_details.csv' – Contains participant numbers and a list of events each participated in.
 - 'event_weights.csv' – Contains each event’s number, difficulty (1=Easy, 2=Medium, 3=Hard), and weight.
-- 'rating_history.csv' – Output file showing participant ratings after every event (even skipped ones).
-- 'final_leaderboard.csv' – Sorted list of final participant ratings.
 - 'ccrs.py' – The main Python script that performs the simulation.
 
 <hr>
@@ -27,25 +25,25 @@ This project implements a simulation of a competitive coding rating system for a
 
 <b>Rating System</b>
 
-- **Initial Rating:** 1000 (minimum rating = 1000)
-- **Expected Problems Solved (μ):**  
-  \[
-  \μ(R) = \frac{6}{1 + 10^{(R_{mid} - R)/400}}
-  \]  
+- Initial Rating: 1000 (minimum rating = 1000)
+- Expected Problems Solved (μ): 
+  
+  μ(R) = 6/{1 + 10^{(R_{mid} - R)/400}}
+  
   where Rmid depends on contest difficulty:
   - Easy (1): Rmid = 1400  
   - Medium (2): Rmid = 1500  
   - Hard (3): Rmid = 1600
-- **Actual Problems Solved (S):** Generated using a biased distribution.
-- **Rating Update Formula:**  
-  \[
-  \Delta = K \cdot (S - \mu) \cdot \text{weight}
-  \]  
+- Actual Problems Solved (S): Generated using a biased distribution.
+- Rating Update Formula:  
+
+  Δ=K⋅(S−μ)⋅weight
+   
   where K = 40 for <3 events, otherwise K = 20.
 
----
+<hr>
 
-## 🎲 Biased Problem Solving
+<b>Biased Problem Solving</b>
 
 | Rating Range   | Likely Problems Solved       |
 |----------------|-------------------------------|
@@ -56,48 +54,49 @@ This project implements a simulation of a competitive coding rating system for a
 
 Random values are chosen with weighted bias to simulate realistic performance tendencies.
 
----
+<hr>
 
-## 📉 Inactivity & Decay
+<b>Inactivity & Decay</b>
 
-If a participant misses **2+ consecutive events**, their rating decays:
-- **Decay Formula:** 5% of the amount above 1000 (capped at 50 points).
+If a participant misses 2+ consecutive events, their rating decays:
+- Decay Formula:
+- 
+Rnew =R−min(50,0.05⋅(R−1000)) (capped at 50 points).
+
 - Applied only when a 2-event gap is detected between participations.
 
----
+<hr>
 
-## 📊 Output Files
+<b>Output Files</b>
 
-- **rating_history.csv**  
-  Ratings of every participant **after each event** (even if they didn’t participate, rating is carried forward or decayed).
+- 'rating_history.csv'  
+  Ratings of every participant after each event (even if they didn’t participate, rating is carried forward or decayed).
   
-- **final_leaderboard.csv**  
+- 'final_leaderboard.csv'  
   Final ratings, sorted from highest to lowest.
 
----
+<hr>
 
-## 🚀 How to Run
+<b>How to Run</b>
 
 1. Ensure Python 3.7+ is installed.
 2. Install required package (if not already installed):
    ```
    pip install pandas
    ```
-3. Place both CSV input files in the same directory as `main.py`.
+3. Place both CSV input files in the same directory as `ccrs.py`.
 4. Run the script:
    ```
-   python main.py
+   python ccrs.py
    ```
 5. Check the generated files: `rating_history.csv` and `final_leaderboard.csv`.
 
 ---
 
-## 📌 Notes
+<b>Notes</b>
 
 - All ratings are rounded to the nearest integer.
 - Decay is applied before event participation if the inactivity condition is met.
 - The simulation ensures a fair and dynamic rating evolution based on real-world contest behavior.
 
----
 
-Let me know if you'd like a Markdown version or want to convert this into a GitHub-ready format!
